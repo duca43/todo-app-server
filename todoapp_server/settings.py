@@ -129,3 +129,11 @@ STATIC_URL = '/static/'
 # Authentication class
 
 AUTH_USER_MODEL = 'users.User'
+
+#Rest framework
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+} 
