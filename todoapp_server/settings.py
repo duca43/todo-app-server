@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'rest_framework',
 
     #my apps
-    'todoapp_server.todoapp',
+    'todoapp_server.users',
+    'todoapp_server.todos',
 ]
 
 MIDDLEWARE = [
