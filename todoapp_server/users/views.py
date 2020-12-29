@@ -14,12 +14,10 @@ class UserViewSet(mixins.CreateModelMixin,
     serializer_class = UserSerializer
 
     def create(self, request, *args, **kwargs):
-        data = request.data
-        data['password'] = make_password(data['password'])
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response(serializer.data, HTTP_201_CREATED)
+        User.objects.create_user(**serializer.data)
+        return Response(status=HTTP_201_CREATED)
 
     @action(detail=False, url_path='me', permission_classes=[IsAuthenticated]) 
     def get_current_user(self, request):          
