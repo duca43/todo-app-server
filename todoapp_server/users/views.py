@@ -1,10 +1,11 @@
+from django.contrib.auth.hashers import make_password
 from rest_framework import viewsets, mixins
-from .serializers import UserSerializer, User
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
-from rest_framework.status import HTTP_200_OK
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED
 from rest_framework.decorators import action
+from .serializers import UserSerializer, User
 
 class UserViewSet(mixins.CreateModelMixin,
                 viewsets.GenericViewSet):
@@ -12,10 +13,15 @@ class UserViewSet(mixins.CreateModelMixin,
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
-    @action(detail=False, 
-        url_path='me', 
-        permission_classes=[IsAuthenticated],
-        renderer_classes=[JSONRenderer]) 
+    def create(self, request, *args, **kwargs):
+        data = request.data
+        data['password'] = make_password(data['password'])
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        return Response(serializer.data, HTTP_201_CREATED)
+
+    @action(detail=False, url_path='me', permission_classes=[IsAuthenticated]) 
     def get_current_user(self, request):          
         response_serializer = UserSerializer(request.user)
         return Response(response_serializer.data, HTTP_200_OK)
