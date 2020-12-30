@@ -15,7 +15,7 @@ class Todo(models.Model):
     ]
 
     title = models.CharField(max_length=50)
-    description = models.CharField(max_length=200, blank=True)
+    description = models.CharField(max_length=200, blank=True, null=True)
     priority = models.CharField(max_length=2, choices=PRIORITY_CHOICES, default=NORMAL_PRIORITY)
     completed = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
