@@ -38,7 +38,7 @@ class TodoViewSet(mixins.ListModelMixin,
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
+        Todo.objects.filter(pk=instance.id).update(**serializer.validated_data)
         response_serializer = TodoSerializer(self.get_object())
         return Response(response_serializer.data, status=HTTP_200_OK)
 
