@@ -142,4 +142,10 @@ REST_FRAMEWORK = {
 
 # CORS configuration
 
-CORS_ALLOW_ALL_ORIGINS = True # Ovo je samo dok ne budem imao FE
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'localhost:3000',
+]
